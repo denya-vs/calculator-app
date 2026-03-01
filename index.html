@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Arb Calculator</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--tg-theme-bg-color, #1c1c1e);
+      color: var(--tg-theme-text-color, #ffffff);
+      padding: 16px 16px 32px;
+      font-size: 15px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .params {
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .param-label {
+      font-size: 11px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .param-value {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .param-sub {
+      font-size: 11px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+    }
+
+    .arb-value { color: #34c759; }
+
+    .tabs {
+      display: flex;
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 14px;
+      gap: 4px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 9px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab.active {
+      background: var(--tg-theme-button-color, #007aff);
+      color: var(--tg-theme-button-text-color, #fff);
+    }
+
+    .budget-label {
+      font-size: 13px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      margin-bottom: 8px;
+    }
+
+    .budget-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+      border-radius: 12px;
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .budget-sign {
+      font-size: 22px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      margin-right: 6px;
+    }
+
+    .budget-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--tg-theme-text-color, #fff);
+      font-size: 26px;
+      font-weight: 700;
+      padding: 14px 0;
+      width: 100%;
+      -moz-appearance: textfield;
+    }
+
+    .budget-input::-webkit-outer-spin-button,
+    .budget-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    .budget-input::placeholder { color: var(--tg-theme-hint-color, #555); }
+
+    .card {
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profit-badge {
+      background: rgba(52, 199, 89, 0.15);
+      color: #34c759;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .fav-badge {
+      color: var(--tg-theme-button-color, #007aff);
+      font-weight: 600;
+    }
+
+    .stake-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .stake-row + .stake-row {
+      border-top: 1px solid rgba(128,128,128,0.15);
+    }
+
+    .stake-name {
+      color: var(--tg-theme-hint-color, #8e8e93);
+      font-size: 14px;
+    }
+
+    .stake-val {
+      font-size: 17px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .stake-sub {
+      font-size: 11px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      text-align: right;
+      margin-top: 1px;
+    }
+
+    .payouts {
+      display: flex;
+      gap: 8px;
+    }
+
+    .payout-card {
+      flex: 1;
+      background: rgba(128,128,128,0.1);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .payout-label {
+      font-size: 11px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      margin-bottom: 4px;
+    }
+
+    .payout-amount {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .payout-profit {
+      font-size: 12px;
+      color: #34c759;
+      margin-top: 1px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 48px 0;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      font-size: 16px;
+    }
+
+    .warn {
+      text-align: center;
+      padding: 20px;
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+      border-radius: 12px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Arb Calculator</h1>
+</div>
+
+<div class="params">
+  <div>
+    <div class="param-label">Poly</div>
+    <div class="param-value" id="p-poly">—</div>
+    <div class="param-sub" id="p-poly-pct"></div>
+  </div>
+  <div>
+    <div class="param-label" id="bk-label">1xBet</div>
+    <div class="param-value" id="p-x">—</div>
+    <div class="param-sub" id="p-x-pct"></div>
+  </div>
+  <div>
+    <div class="param-label">Arb</div>
+    <div class="param-value arb-value" id="p-arb">—</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" id="tab-px" onclick="setTab('px')">PX Perfect</div>
+  <div class="tab" id="tab-bx" onclick="setTab('bx')">BX Biased</div>
+</div>
+
+<div class="budget-label">Бюджет</div>
+<div class="budget-wrap">
+  <span class="budget-sign">$</span>
+  <input
+    class="budget-input"
+    type="number"
+    id="budget"
+    placeholder="100"
+    inputmode="decimal"
+    autofocus
+  />
+</div>
+
+<div id="result"></div>
+
+<script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
+
+  const params = new URLSearchParams(window.location.search);
+  const poly   = parseFloat(params.get('poly'))   || 0;
+  const x      = parseFloat(params.get('x'))      || 0;
+  const isBetmgm = params.get('betmgm') === '1';
+  const bkName = isBetmgm ? 'BetMGM' : '1xBet';
+
+  let usdCadRate = 1.44;
+  let currentTab = 'px';
+
+  document.getElementById('bk-label').textContent = bkName;
+
+  if (poly && x) {
+    document.getElementById('p-poly').textContent = poly.toFixed(3);
+    document.getElementById('p-poly-pct').textContent = (poly * 100).toFixed(1) + '%';
+    document.getElementById('p-x').textContent = x.toFixed(2);
+    document.getElementById('p-x-pct').textContent = (100 / x).toFixed(1) + '%';
+    const arb = (1 / (poly + 1 / x) - 1) * 100;
+    if (arb > 0) document.getElementById('p-arb').textContent = '+' + arb.toFixed(2) + '%';
+  }
+
+  if (isBetmgm) {
+    fetch('https://api.frankfurter.app/latest?from=USD&to=CAD', { signal: AbortSignal.timeout(5000) })
+      .then(r => r.json())
+      .then(d => { if (d.rates?.CAD) { usdCadRate = d.rates.CAD; render(); } })
+      .catch(() => {});
+  }
+
+  function setTab(tab) {
+    currentTab = tab;
+    document.getElementById('tab-px').className = 'tab' + (tab === 'px' ? ' active' : '');
+    document.getElementById('tab-bx').className = 'tab' + (tab === 'bx' ? ' active' : '');
+    render();
+  }
+
+  function fmt(n, d = 2) { return Number(n).toFixed(d); }
+  function fmtM(n)        { return '$' + fmt(n); }
+  function fmtProfit(n)   { return (n >= 0 ? '+' : '') + fmtM(n); }
+
+  function calcPX(budget) {
+    const sumInv     = poly + 1 / x;
+    const profitPerc = (1 / sumInv - 1) * 100;
+    const xbetStake  = Math.round(budget * (1 / x) / sumInv);
+    const polyStake  = budget - xbetStake;
+    const payoutPoly = polyStake / poly;
+    const payoutXbet = xbetStake * x;
+    return {
+      profitPerc,
+      polyStake, xbetStake,
+      payoutPoly, payoutXbet,
+      profitPoly: payoutPoly - budget,
+      profitXbet: payoutXbet - budget,
+    };
+  }
+
+  function calcBX(budget) {
+    const biasTowardPoly = poly >= 1 / x;
+    let polyStake, xbetStake;
+    if (biasTowardPoly) {
+      xbetStake = Math.ceil(budget / x);
+      polyStake = budget - xbetStake;
+    } else {
+      polyStake = Math.ceil(budget * poly);
+      xbetStake = budget - polyStake;
+    }
+    return {
+      biasTowardPoly,
+      polyStake, xbetStake,
+      payoutPoly: polyStake / poly,
+      payoutXbet: xbetStake * x,
+      profitPoly: polyStake / poly - budget,
+      profitXbet: xbetStake * x - budget,
+    };
+  }
+
+  function xbetLine(stake) {
+    if (!isBetmgm) return fmtM(stake);
+    return fmtM(stake) + ` <span style="color:var(--tg-theme-hint-color,#8e8e93);font-size:12px;">(≈ C$${Math.round(stake * usdCadRate)})</span>`;
+  }
+
+  function render() {
+    const budget = parseFloat(document.getElementById('budget').value);
+    const el = document.getElementById('result');
+
+    if (!poly || !x) {
+      el.innerHTML = '<div class="warn">⚠️ Параметры не переданы</div>';
+      return;
+    }
+    if (!budget || budget <= 0) {
+      el.innerHTML = '<div class="empty">Введите бюджет ↑</div>';
+      return;
+    }
+
+    if (currentTab === 'px') {
+      const r = calcPX(budget);
+      el.innerHTML = `
+        <div class="card">
+          <div class="card-title">
+            Ставки
+            <span class="profit-badge">+${fmt(r.profitPerc)}%</span>
+          </div>
+          <div class="stake-row">
+            <span class="stake-name">Polymarket</span>
+            <div><div class="stake-val">${fmtM(r.polyStake)}</div></div>
+          </div>
+          <div class="stake-row">
+            <span class="stake-name">${bkName}</span>
+            <div><div class="stake-val">${xbetLine(r.xbetStake)}</div></div>
+          </div>
+        </div>
+        <div class="payouts">
+          <div class="payout-card">
+            <div class="payout-label">Poly wins</div>
+            <div class="payout-amount">${fmtM(r.payoutPoly)}</div>
+            <div class="payout-profit">${fmtProfit(r.profitPoly)}</div>
+          </div>
+          <div class="payout-card">
+            <div class="payout-label">${bkName} wins</div>
+            <div class="payout-amount">${fmtM(r.payoutXbet)}</div>
+            <div class="payout-profit">${fmtProfit(r.profitXbet)}</div>
+          </div>
+        </div>`;
+    } else {
+      const r = calcBX(budget);
+      const favLabel = r.biasTowardPoly ? 'Poly ✨' : bkName + ' ✨';
+      el.innerHTML = `
+        <div class="card">
+          <div class="card-title">
+            Ставки →
+            <span class="fav-badge">${favLabel}</span>
+          </div>
+          <div class="stake-row">
+            <span class="stake-name">Polymarket</span>
+            <div><div class="stake-val">${fmtM(r.polyStake)}</div></div>
+          </div>
+          <div class="stake-row">
+            <span class="stake-name">${bkName}</span>
+            <div><div class="stake-val">${xbetLine(r.xbetStake)}</div></div>
+          </div>
+        </div>
+        <div class="payouts">
+          <div class="payout-card">
+            <div class="payout-label">Poly wins</div>
+            <div class="payout-amount">${fmtM(r.payoutPoly)}</div>
+            <div class="payout-profit">${fmtProfit(r.profitPoly)}</div>
+          </div>
+          <div class="payout-card">
+            <div class="payout-label">${bkName} wins</div>
+            <div class="payout-amount">${fmtM(r.payoutXbet)}</div>
+            <div class="payout-profit">${fmtProfit(r.profitXbet)}</div>
+          </div>
+        </div>`;
+    }
+  }
+
+  document.getElementById('budget').addEventListener('input', render);
+  render();
+</script>
+
+</body>
+</html>
