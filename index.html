@@ -12,122 +12,165 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--tg-theme-bg-color, #1c1c1e);
       color: var(--tg-theme-text-color, #ffffff);
-      padding: 16px 16px 32px;
+      padding: 14px 14px 40px;
       font-size: 15px;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 18px;
-    }
-
-    .header h1 {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
+    /* ── PARAMS BAR ── */
     .params {
       background: var(--tg-theme-secondary-bg-color, #2c2c2e);
       border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 14px;
+      padding: 11px 14px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-around;
       text-align: center;
     }
-
     .param-label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--tg-theme-hint-color, #8e8e93);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+    .param-value { font-size: 17px; font-weight: 700; margin-top: 2px; }
+    .param-sub   { font-size: 11px; color: var(--tg-theme-hint-color, #8e8e93); }
+    .arb-value   { color: #34c759; }
 
-    .param-value {
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 3px;
+    /* ── OVERRIDE PARAMS ── */
+    .override {
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
+      border-radius: 12px;
+      padding: 11px 14px;
+      margin-bottom: 12px;
     }
-
-    .param-sub {
+    .override-title {
       font-size: 11px;
       color: var(--tg-theme-hint-color, #8e8e93);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 9px;
+    }
+    .override-row { display: flex; gap: 10px; }
+    .override-field { flex: 1; }
+    .override-field label {
+      display: block;
+      font-size: 12px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      margin-bottom: 4px;
+    }
+    .override-field input {
+      width: 100%;
+      background: var(--tg-theme-bg-color, #1c1c1e);
+      border: 1px solid rgba(128,128,128,0.25);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: var(--tg-theme-text-color, #fff);
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    .override-field input::-webkit-outer-spin-button,
+    .override-field input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .override-field input:focus {
+      border-color: var(--tg-theme-button-color, #007aff);
     }
 
-    .arb-value { color: #34c759; }
-
+    /* ── TABS ── */
     .tabs {
       display: flex;
       background: var(--tg-theme-secondary-bg-color, #2c2c2e);
       border-radius: 12px;
       padding: 4px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       gap: 4px;
     }
-
     .tab {
       flex: 1;
       text-align: center;
-      padding: 9px;
+      padding: 9px 4px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--tg-theme-hint-color, #8e8e93);
       transition: background 0.15s, color 0.15s;
     }
-
     .tab.active {
       background: var(--tg-theme-button-color, #007aff);
       color: var(--tg-theme-button-text-color, #fff);
     }
 
-    .budget-label {
+    /* ── MODE TABS ── */
+    .mode-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .mode-tabs::-webkit-scrollbar { display: none; }
+    .mode-tab {
+      flex-shrink: 0;
+      padding: 7px 12px;
+      border-radius: 20px;
       font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--tg-theme-secondary-bg-color, #2c2c2e);
       color: var(--tg-theme-hint-color, #8e8e93);
-      margin-bottom: 8px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .mode-tab.active {
+      background: var(--tg-theme-button-color, #007aff);
+      color: var(--tg-theme-button-text-color, #fff);
     }
 
+    /* ── BUDGET INPUT ── */
+    .input-label {
+      font-size: 12px;
+      color: var(--tg-theme-hint-color, #8e8e93);
+      margin-bottom: 7px;
+    }
     .budget-wrap {
       display: flex;
       align-items: center;
       background: var(--tg-theme-secondary-bg-color, #2c2c2e);
       border-radius: 12px;
       padding: 0 16px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-
     .budget-sign {
       font-size: 22px;
       color: var(--tg-theme-hint-color, #8e8e93);
       margin-right: 6px;
+      user-select: none;
     }
-
     .budget-input {
       flex: 1;
       background: none;
       border: none;
       outline: none;
       color: var(--tg-theme-text-color, #fff);
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
       padding: 14px 0;
       width: 100%;
       -moz-appearance: textfield;
     }
-
     .budget-input::-webkit-outer-spin-button,
     .budget-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-
     .budget-input::placeholder { color: var(--tg-theme-hint-color, #555); }
 
+    /* ── RESULT CARDS ── */
     .card {
       background: var(--tg-theme-secondary-bg-color, #2c2c2e);
       border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
+      padding: 13px 15px;
+      margin-bottom: 10px;
     }
-
     .card-title {
       font-size: 11px;
       text-transform: uppercase;
@@ -138,55 +181,30 @@
       align-items: center;
       gap: 8px;
     }
-
     .profit-badge {
-      background: rgba(52, 199, 89, 0.15);
+      background: rgba(52,199,89,0.15);
       color: #34c759;
       border-radius: 6px;
       padding: 2px 8px;
       font-size: 13px;
       font-weight: 700;
     }
-
     .fav-badge {
       color: var(--tg-theme-button-color, #007aff);
       font-weight: 600;
     }
-
     .stake-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 8px 0;
     }
+    .stake-row + .stake-row { border-top: 1px solid rgba(128,128,128,0.15); }
+    .stake-name { color: var(--tg-theme-hint-color, #8e8e93); font-size: 14px; }
+    .stake-val  { font-size: 18px; font-weight: 700; text-align: right; }
+    .stake-sub  { font-size: 11px; color: var(--tg-theme-hint-color, #8e8e93); text-align: right; margin-top: 1px; }
 
-    .stake-row + .stake-row {
-      border-top: 1px solid rgba(128,128,128,0.15);
-    }
-
-    .stake-name {
-      color: var(--tg-theme-hint-color, #8e8e93);
-      font-size: 14px;
-    }
-
-    .stake-val {
-      font-size: 17px;
-      font-weight: 700;
-      text-align: right;
-    }
-
-    .stake-sub {
-      font-size: 11px;
-      color: var(--tg-theme-hint-color, #8e8e93);
-      text-align: right;
-      margin-top: 1px;
-    }
-
-    .payouts {
-      display: flex;
-      gap: 8px;
-    }
-
+    .payouts { display: flex; gap: 8px; }
     .payout-card {
       flex: 1;
       background: rgba(128,128,128,0.1);
@@ -194,34 +212,13 @@
       padding: 10px 12px;
       text-align: center;
     }
+    .payout-label  { font-size: 11px; color: var(--tg-theme-hint-color, #8e8e93); margin-bottom: 4px; }
+    .payout-amount { font-size: 15px; font-weight: 700; }
+    .payout-profit { font-size: 12px; color: #34c759; margin-top: 1px; }
 
-    .payout-label {
-      font-size: 11px;
-      color: var(--tg-theme-hint-color, #8e8e93);
-      margin-bottom: 4px;
-    }
-
-    .payout-amount {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .payout-profit {
-      font-size: 12px;
-      color: #34c759;
-      margin-top: 1px;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 48px 0;
-      color: var(--tg-theme-hint-color, #8e8e93);
-      font-size: 16px;
-    }
-
-    .warn {
-      text-align: center;
-      padding: 20px;
+    .empty { text-align: center; padding: 48px 0; color: var(--tg-theme-hint-color, #8e8e93); font-size: 16px; }
+    .warn  {
+      text-align: center; padding: 20px;
       background: var(--tg-theme-secondary-bg-color, #2c2c2e);
       border-radius: 12px;
       color: var(--tg-theme-hint-color, #8e8e93);
@@ -230,20 +227,17 @@
 </head>
 <body>
 
-<div class="header">
-  <h1>Arb Calculator</h1>
-</div>
-
+<!-- PARAMS BAR -->
 <div class="params">
   <div>
     <div class="param-label">Poly</div>
     <div class="param-value" id="p-poly">—</div>
-    <div class="param-sub" id="p-poly-pct"></div>
+    <div class="param-sub"  id="p-poly-pct"></div>
   </div>
   <div>
     <div class="param-label" id="bk-label">1xBet</div>
     <div class="param-value" id="p-x">—</div>
-    <div class="param-sub" id="p-x-pct"></div>
+    <div class="param-sub"  id="p-x-pct"></div>
   </div>
   <div>
     <div class="param-label">Arb</div>
@@ -251,14 +245,38 @@
   </div>
 </div>
 
-<div class="tabs">
-  <div class="tab active" id="tab-px" onclick="setTab('px')">PX Perfect</div>
-  <div class="tab" id="tab-bx" onclick="setTab('bx')">BX Biased</div>
+<!-- OVERRIDE PARAMS -->
+<div class="override">
+  <div class="override-title">Параметры (можно изменить)</div>
+  <div class="override-row">
+    <div class="override-field">
+      <label>Poly цена</label>
+      <input type="number" id="inp-poly" placeholder="0.52" inputmode="decimal" step="0.001">
+    </div>
+    <div class="override-field">
+      <label id="coef-label">Коэф 1xBet</label>
+      <input type="number" id="inp-x" placeholder="3.85" inputmode="decimal" step="0.01">
+    </div>
+  </div>
 </div>
 
-<div class="budget-label">Бюджет</div>
+<!-- CALC MODE TABS (PX / BX) -->
+<div class="tabs">
+  <div class="tab active" id="tab-px" onclick="setTab('px')">PX Perfect</div>
+  <div class="tab"        id="tab-bx" onclick="setTab('bx')">BX Biased</div>
+</div>
+
+<!-- INPUT MODE -->
+<div class="mode-tabs" id="mode-tabs">
+  <div class="mode-tab active" data-mode="budget" onclick="setMode('budget')">💰 Бюджет</div>
+  <div class="mode-tab"        data-mode="poly"   onclick="setMode('poly')">📌 Poly stake</div>
+  <div class="mode-tab"        data-mode="xusd"   onclick="setMode('xusd')" id="mode-xusd">📌 xBet $USD</div>
+  <div class="mode-tab"        data-mode="xcad"   onclick="setMode('xcad')" id="mode-xcad" style="display:none">📌 BetMGM C$</div>
+</div>
+
+<div class="input-label" id="input-label">Общий бюджет</div>
 <div class="budget-wrap">
-  <span class="budget-sign">$</span>
+  <span class="budget-sign" id="input-sign">$</span>
   <input
     class="budget-input"
     type="number"
@@ -275,31 +293,61 @@
   const tg = window.Telegram?.WebApp;
   if (tg) { tg.ready(); tg.expand(); }
 
-  const params = new URLSearchParams(window.location.search);
-  const poly   = parseFloat(params.get('poly'))   || 0;
-  const x      = parseFloat(params.get('x'))      || 0;
-  const isBetmgm = params.get('betmgm') === '1';
-  const bkName = isBetmgm ? 'BetMGM' : '1xBet';
+  // ── URL params ──
+  const urlParams  = new URLSearchParams(window.location.search);
+  const urlPoly    = parseFloat(urlParams.get('poly')) || 0;
+  const urlX       = parseFloat(urlParams.get('x'))    || 0;
+  const isBetmgm   = urlParams.get('betmgm') === '1';
+  const bkName     = isBetmgm ? 'BetMGM' : '1xBet';
 
-  let usdCadRate = 1.44;
-  let currentTab = 'px';
+  let usdCadRate  = 1.44;
+  let currentTab  = 'px';
+  let currentMode = 'budget';
 
-  document.getElementById('bk-label').textContent = bkName;
-
-  if (poly && x) {
-    document.getElementById('p-poly').textContent = poly.toFixed(3);
-    document.getElementById('p-poly-pct').textContent = (poly * 100).toFixed(1) + '%';
-    document.getElementById('p-x').textContent = x.toFixed(2);
-    document.getElementById('p-x-pct').textContent = (100 / x).toFixed(1) + '%';
-    const arb = (1 / (poly + 1 / x) - 1) * 100;
-    if (arb > 0) document.getElementById('p-arb').textContent = '+' + arb.toFixed(2) + '%';
+  // ── Init UI labels ──
+  document.getElementById('bk-label').textContent  = bkName;
+  document.getElementById('coef-label').textContent = 'Коэф ' + bkName;
+  if (isBetmgm) {
+    document.getElementById('mode-xcad').style.display = '';
+    document.getElementById('mode-xusd').textContent   = '📌 xBet $USD';
   }
 
+  // Pre-fill override fields
+  if (urlPoly) document.getElementById('inp-poly').value = urlPoly;
+  if (urlX)    document.getElementById('inp-x').value    = urlX;
+
+  // Update params bar
+  updateParamsBar();
+
+  // ── Fetch USD/CAD ──
   if (isBetmgm) {
     fetch('https://api.frankfurter.app/latest?from=USD&to=CAD', { signal: AbortSignal.timeout(5000) })
       .then(r => r.json())
       .then(d => { if (d.rates?.CAD) { usdCadRate = d.rates.CAD; render(); } })
       .catch(() => {});
+  }
+
+  // ── Helpers ──
+  function getParams() {
+    const p = parseFloat(document.getElementById('inp-poly').value) || 0;
+    const x = parseFloat(document.getElementById('inp-x').value)    || 0;
+    return { p, x };
+  }
+
+  function updateParamsBar() {
+    const { p, x } = getParams();
+    if (p) {
+      document.getElementById('p-poly').textContent    = p.toFixed(3);
+      document.getElementById('p-poly-pct').textContent = (p * 100).toFixed(1) + '%';
+    }
+    if (x) {
+      document.getElementById('p-x').textContent    = x.toFixed(2);
+      document.getElementById('p-x-pct').textContent = (100 / x).toFixed(1) + '%';
+    }
+    if (p && x) {
+      const arb = (1 / (p + 1 / x) - 1) * 100;
+      document.getElementById('p-arb').textContent = arb > 0 ? '+' + arb.toFixed(2) + '%' : '—';
+    }
   }
 
   function setTab(tab) {
@@ -309,66 +357,108 @@
     render();
   }
 
-  function fmt(n, d = 2) { return Number(n).toFixed(d); }
-  function fmtM(n)        { return '$' + fmt(n); }
-  function fmtProfit(n)   { return (n >= 0 ? '+' : '') + fmtM(n); }
+  function setMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-tab').forEach(el => {
+      el.className = 'mode-tab' + (el.dataset.mode === mode ? ' active' : '');
+    });
+    const labels = {
+      budget : ['Общий бюджет',        '$'],
+      poly   : ['Моя ставка на Poly',  '$'],
+      xusd   : ['Моя ставка на ' + bkName + ' (USD)', '$'],
+      xcad   : ['Моя ставка на BetMGM (CAD)',          'C$'],
+    };
+    document.getElementById('input-label').textContent = labels[mode][0];
+    document.getElementById('input-sign').textContent  = labels[mode][1];
+    document.getElementById('budget').value = '';
+    document.getElementById('budget').placeholder = mode === 'budget' ? '100' : '50';
+    render();
+  }
 
-  function calcPX(budget) {
-    const sumInv     = poly + 1 / x;
+  function fmt(n, d = 2)  { return Number(n).toFixed(d); }
+  function fmtM(n)         { return '$' + fmt(n); }
+  function fmtProfit(n)    { return (n >= 0 ? '+' : '') + fmtM(n); }
+
+  // Convert user input to effective budget
+  function inputToBudget(val, p, x) {
+    const sumInv = p + 1 / x;
+    if (currentMode === 'budget') return val;
+    if (currentMode === 'poly')   return val * sumInv / p;
+    if (currentMode === 'xusd')   return val * sumInv * x;
+    if (currentMode === 'xcad')   return (val / usdCadRate) * sumInv * x;
+    return val;
+  }
+
+  function calcPX(p, x, budget) {
+    const sumInv     = p + 1 / x;
     const profitPerc = (1 / sumInv - 1) * 100;
     const xbetStake  = Math.round(budget * (1 / x) / sumInv);
     const polyStake  = budget - xbetStake;
-    const payoutPoly = polyStake / poly;
+    const payoutPoly = polyStake / p;
     const payoutXbet = xbetStake * x;
     return {
-      profitPerc,
-      polyStake, xbetStake,
-      payoutPoly, payoutXbet,
+      profitPerc, polyStake, xbetStake, payoutPoly, payoutXbet,
       profitPoly: payoutPoly - budget,
       profitXbet: payoutXbet - budget,
     };
   }
 
-  function calcBX(budget) {
-    const biasTowardPoly = poly >= 1 / x;
+  function calcBX(p, x, budget) {
+    const biasTowardPoly = p >= 1 / x;
     let polyStake, xbetStake;
     if (biasTowardPoly) {
       xbetStake = Math.ceil(budget / x);
       polyStake = budget - xbetStake;
     } else {
-      polyStake = Math.ceil(budget * poly);
+      polyStake = Math.ceil(budget * p);
       xbetStake = budget - polyStake;
     }
     return {
-      biasTowardPoly,
-      polyStake, xbetStake,
-      payoutPoly: polyStake / poly,
+      biasTowardPoly, polyStake, xbetStake,
+      payoutPoly: polyStake / p,
       payoutXbet: xbetStake * x,
-      profitPoly: polyStake / poly - budget,
+      profitPoly: polyStake / p - budget,
       profitXbet: xbetStake * x - budget,
     };
   }
 
   function xbetLine(stake) {
     if (!isBetmgm) return fmtM(stake);
-    return fmtM(stake) + ` <span style="color:var(--tg-theme-hint-color,#8e8e93);font-size:12px;">(≈ C$${Math.round(stake * usdCadRate)})</span>`;
+    const cad = Math.round(stake * usdCadRate);
+    return `${fmtM(stake)} <span style="color:var(--tg-theme-hint-color,#8e8e93);font-size:12px;">(≈ C$${cad})</span>`;
   }
 
   function render() {
-    const budget = parseFloat(document.getElementById('budget').value);
+    const { p, x } = getParams();
     const el = document.getElementById('result');
 
-    if (!poly || !x) {
-      el.innerHTML = '<div class="warn">⚠️ Параметры не переданы</div>';
+    if (!p || !x) {
+      el.innerHTML = '<div class="warn">⚠️ Введите poly цену и коэф</div>';
       return;
     }
-    if (!budget || budget <= 0) {
-      el.innerHTML = '<div class="empty">Введите бюджет ↑</div>';
+    if (p <= 0 || p >= 1) {
+      el.innerHTML = '<div class="warn">⚠️ Poly цена должна быть от 0 до 1</div>';
+      return;
+    }
+    if (x <= 1) {
+      el.innerHTML = '<div class="warn">⚠️ Коэф должен быть больше 1</div>';
+      return;
+    }
+    if (p + 1 / x >= 1) {
+      el.innerHTML = '<div class="warn">❌ Нет арбитража (сумма вероятностей ≥ 1)</div>';
       return;
     }
 
+    const raw = parseFloat(document.getElementById('budget').value);
+    if (!raw || raw <= 0) {
+      el.innerHTML = '<div class="empty">Введите сумму ↑</div>';
+      return;
+    }
+
+    const budget = inputToBudget(raw, p, x);
+
     if (currentTab === 'px') {
-      const r = calcPX(budget);
+      const r = calcPX(p, x, budget);
       el.innerHTML = `
         <div class="card">
           <div class="card-title">
@@ -397,7 +487,7 @@
           </div>
         </div>`;
     } else {
-      const r = calcBX(budget);
+      const r = calcBX(p, x, budget);
       const favLabel = r.biasTowardPoly ? 'Poly ✨' : bkName + ' ✨';
       el.innerHTML = `
         <div class="card">
@@ -429,8 +519,10 @@
     }
   }
 
+  // ── Event listeners ──
   document.getElementById('budget').addEventListener('input', render);
-  render();
+  document.getElementById('inp-poly').addEventListener('input', () => { updateParamsBar(); render(); });
+  document.getElementById('inp-x').addEventListener('input',    () => { updateParamsBar(); render(); });
 </script>
 
 </body>
