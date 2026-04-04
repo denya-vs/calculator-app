@@ -259,6 +259,10 @@
       <label id="coef-label">Коэф 1xBet</label>
       <input type="number" id="inp-x" placeholder="3.85" inputmode="decimal" step="0.01">
     </div>
+    <div class="override-field" style="max-width:90px">
+      <label>Poly fee</label>
+      <input type="number" id="inp-fee" placeholder="0.03" inputmode="decimal" step="0.001" min="0" max="0.1">
+    </div>
   </div>
 </div>
 
@@ -295,10 +299,19 @@
   const tg = window.Telegram?.WebApp;
   if (tg) { tg.ready(); tg.expand(); }
 
+  // ── Polymarket taker fee ──
+  // Rate depends on market category: sports=0.03, finance/politics=0.04, culture=0.05, crypto=0.072, geo=0
+  function effectivePolyP(p) {
+    const feeRate = parseFloat(document.getElementById('inp-fee').value) || 0;
+    if (feeRate === 0) return p;
+    return p / (1 - feeRate * (1 - p));
+  }
+
   // ── URL params ──
   const urlParams  = new URLSearchParams(window.location.search);
   const urlPoly    = parseFloat(urlParams.get('poly')) || 0;
   const urlX       = parseFloat(urlParams.get('x'))    || 0;
+  const urlFee     = parseFloat(urlParams.get('fee'));   // e.g. 0.03 sports, 0.04 finance, 0 geo
   const isBetmgm   = urlParams.get('betmgm') === '1';
   const bkName     = isBetmgm ? 'BetMGM' : '1xBet';
 
@@ -315,8 +328,9 @@
   }
 
   // Pre-fill override fields
-  if (urlPoly) document.getElementById('inp-poly').value = urlPoly;
-  if (urlX)    document.getElementById('inp-x').value    = urlX;
+  if (urlPoly)              document.getElementById('inp-poly').value = urlPoly;
+  if (urlX)                 document.getElementById('inp-x').value    = urlX;
+  if (!isNaN(urlFee))       document.getElementById('inp-fee').value  = urlFee;
 
   // Update params bar
   updateParamsBar();
@@ -347,7 +361,8 @@
       document.getElementById('p-x-pct').textContent = (100 / x).toFixed(1) + '%';
     }
     if (p && x) {
-      const arb = (1 / (p + 1 / x) - 1) * 100;
+      const ep  = effectivePolyP(p);
+      const arb = (1 / (ep + 1 / x) - 1) * 100;
       document.getElementById('p-arb').textContent = arb > 0 ? '+' + arb.toFixed(2) + '%' : '—';
     }
   }
@@ -383,20 +398,22 @@
 
   // Convert user input to effective budget
   function inputToBudget(val, p, x) {
-    const sumInv = p + 1 / x;
+    const ep     = effectivePolyP(p);
+    const sumInv = ep + 1 / x;
     if (currentMode === 'budget') return val;
-    if (currentMode === 'poly')   return val * sumInv / p;
+    if (currentMode === 'poly')   return val * sumInv / ep;
     if (currentMode === 'xusd')   return val * sumInv * x;
     if (currentMode === 'xcad')   return (val / usdCadRate) * sumInv * x;
     return val;
   }
 
   function calcPX(p, x, budget) {
-    const sumInv     = p + 1 / x;
+    const ep         = effectivePolyP(p);
+    const sumInv     = ep + 1 / x;
     const profitPerc = (1 / sumInv - 1) * 100;
     const xbetStake  = Math.round(budget * (1 / x) / sumInv);
     const polyStake  = budget - xbetStake;
-    const payoutPoly = polyStake / p;
+    const payoutPoly = polyStake / ep;   // net payout after fee
     const payoutXbet = xbetStake * x;
     return {
       profitPerc, polyStake, xbetStake, payoutPoly, payoutXbet,
@@ -406,21 +423,22 @@
   }
 
   function calcBX(p, x, budget) {
-    const biasTowardPoly = p >= 1 / x;
+    const ep             = effectivePolyP(p);
+    const biasTowardPoly = ep >= 1 / x;
     let polyStake, xbetStake;
     if (biasTowardPoly) {
       xbetStake = Math.ceil(budget / x);
       polyStake = budget - xbetStake;
     } else {
-      polyStake = Math.ceil(budget * p);
+      polyStake = Math.ceil(budget * ep);
       xbetStake = budget - polyStake;
     }
+    const payoutPoly = polyStake / ep;   // net payout after fee
+    const payoutXbet = xbetStake * x;
     return {
-      biasTowardPoly, polyStake, xbetStake,
-      payoutPoly: polyStake / p,
-      payoutXbet: xbetStake * x,
-      profitPoly: polyStake / p - budget,
-      profitXbet: xbetStake * x - budget,
+      biasTowardPoly, polyStake, xbetStake, payoutPoly, payoutXbet,
+      profitPoly: payoutPoly - budget,
+      profitXbet: payoutXbet - budget,
     };
   }
 
@@ -446,8 +464,8 @@
       el.innerHTML = '<div class="warn">⚠️ Коэф должен быть больше 1</div>';
       return;
     }
-    if (p + 1 / x >= 1) {
-      el.innerHTML = '<div class="warn">❌ Нет арбитража (сумма вероятностей ≥ 1)</div>';
+    if (effectivePolyP(p) + 1 / x >= 1) {
+      el.innerHTML = '<div class="warn">❌ Нет арбитража (сумма вероятностей ≥ 1, с учётом комиссии Poly 3%)</div>';
       return;
     }
 
@@ -525,6 +543,7 @@
   document.getElementById('budget').addEventListener('input', render);
   document.getElementById('inp-poly').addEventListener('input', () => { updateParamsBar(); render(); });
   document.getElementById('inp-x').addEventListener('input',    () => { updateParamsBar(); render(); });
+  document.getElementById('inp-fee').addEventListener('input',  () => { updateParamsBar(); render(); });
 </script>
 
 </body>
